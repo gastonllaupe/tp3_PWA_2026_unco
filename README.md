@@ -3,7 +3,7 @@
 
 ---
 
-## 📚 Información académica
+## Información académica
 
 **Programación Web Avanzada — Facultad de Informática — Universidad Nacional del Comahue — 2026**
 
@@ -12,7 +12,7 @@
 
 ---
 
-## 👥 Integrantes
+## Integrantes
 
 | Nombre | Email | Rol |
 | :--- | :--- | :--- |
@@ -22,10 +22,9 @@
 
 ---
 
-## 🧾 Descripción
+## Descripción
 
-Backend para aplicación de videojuegos, la base de datos contara con detalles de cada juego y sera utilizada por el proyecto de frontend que puede ser visto en este repositorio:
-[text](https://github.com/AlejandroClaure/tp2_PWA_2026_unco)
+Backend para aplicación de videojuegos, la base de datos contara con detalles de cada juego y sera utilizada por el proyecto de frontend que puede ser visto en este [repositorio](https://github.com/AlejandroClaure/tp2_PWA_2026_unco)
 
 
 ---
@@ -33,10 +32,8 @@ Backend para aplicación de videojuegos, la base de datos contara con detalles d
 
 ### Librerías utilizadas
 
-- Node.js
 - Express
 - Prisma ORM
-- PostgreSQL
 
 ---
 
@@ -64,26 +61,20 @@ La estructura de los objetos tiene este formato:
 
 ---
 
-## ⚙️ Stack Tecnológico
+## Stack Tecnológico
 
 | Tecnología | Uso / Propósito |
 | :--- | :--- |
-| **React** | Biblioteca principal para la interfaz de usuario |
-| **Vite** | Tooling y entorno de desarrollo ultra rápido |
-| **Tailwind CSS v4** | Estilado mediante utilidades de última generación |
-| **React Router** | Manejo de navegación y rutas de la SPA |
-| **MockAPI** | Backend simulado para el consumo de datos |
-| **localStorage** | Persistencia local para la lista de favoritos |
-| **Vitest** | Framework de testing |
-| **React Testing Library** | Testing de componentes React |
-| **jest-dom** | Matchers adicionales para testing |
-| **user-event** | Simulación de eventos de usuario |
-| **i18next** | Internacionalización |
+| Node.js | Entorno de ejecución que permite correr JavaScript en el servidor. |
+| Express | Framework que simplifica la creación de APIs y manejo de rutas HTTP. |
+| Prisma ORM | Herramienta que facilita la comunicación entre la aplicación y la base de datos usando modelos en lugar de SQL directo. |
+| PostgreSQL | Sistema de base de datos relacional donde se almacenan los datos de forma estructurada. |
+| NEON | Plataforma cloud que provee PostgreSQL como servicio para poder usar la base de datos en la nube sin administrarla localmente. |
 
 ---
 
 
-## 🚀 Instalación y Setup
+## Instalación y Setup
 
 Para poner en marcha el proyecto localmente, seguí estos pasos:
 
@@ -107,39 +98,22 @@ Para poner en marcha el proyecto localmente, seguí estos pasos:
    npm install
    ```
 
-5. **Ejecutar el proyecto:**
-   ```bash
-   npm run dev
-   ```
 
 ---
 
-<img src="https://img.shields.io/badge/RTL-Testing_Library-E33332?style=for-the-badge&logo=testinglibrary&logoColor=white" /> 
-Ejecución de tests
-
-### Ejecutar tests en modo watch
-
-```bash
-npm run test
-```
-
-### Ejecutar tests una sola vez
-
-```bash
-npm run test:run
-```
-
----
-
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```text
 src/
- ├── components/       # Componentes (GameCard, List, SearchBar, etc.)
- ├── pages/            # Vistas (Home, Details, Favorites, NotFound)
- ├── const/            # Definición de rutas (routes.js)
- ├── main.jsx          # Punto de entrada de React
- └── index.css         # Directivas de Tailwind
+ ├── controllers/      #recibe req y res, llama a service y responde al front end 
+ ├── middlewares/      #maneja errores globales     
+ ├── prisma/           #todo lo relacionado a la base de datos 
+ ├── routes/           #define las rutas de la API
+ └── services/         #se relaciona con prisma, procesa datos
+ └── validations/      #valida los datos del usuario
+ └── app.js            #configuracion del servidor express
+ └── index.js          #levanta el servidor
+
 ```
 
 ---
@@ -149,9 +123,9 @@ src/
 ```
 main
  └── develop
-      ├── feature/SETUP-1-init-react
-      ├── feature/COMP-1-titulo
-      ├── feature/FEAT-1-agregar-media
+      ├── feature/SETUP-1-init-prisma
+      ├── feature/FEAT-1-games-read
+      ├── feature/FEAT-2-games-write
       └── ...
 ```
 
@@ -164,16 +138,8 @@ main
 
 ### Ramas de trabajo
 
-Cada tarea del tablero = una branch. Formato:
+Cada tarea del tablero se trabajara en su respectiva branch.
 
-```
-feature/<ID-LINEAR>-descripcion-corta
-
-Ejemplos:
-  feature/COMP-1-titulo
-  feature/FEAT-3-editar-media
-  feature/DOC-1-readme
-```
 
 ### Cómo crear una branch
 
@@ -183,7 +149,7 @@ git checkout develop
 git pull origin develop
 
 # Creamos la branch con el formato correcto
-git checkout -b feature/COMP-1-titulo
+git checkout -b feat-4-error-handling
 
 # Verificamos estar en la branch
 git branch
@@ -207,17 +173,17 @@ git checkout develop
 git pull origin develop
 
 # 2. Crear branch para la tarea
-git checkout -b feature/FEAT-1-agregar-media
+git checkout -b feature/FEAT-1-games-read
 
 # 3. Desarrollar y realizar commits
 git add .
-git commit -m "FEAT-1: agregar formulario de nueva pelicula"
+git commit -m "FEAT-1: GET a los juegos"
 
 # 4. Subir la branch
-git push origin feature/FEAT-1-agregar-media
+git push origin feature/FEAT-1-games-read
 
 # 5. Abrir Pull Request a develop en GitHub
-# Título del PR: [FEAT-1] Agregar pelicula/serie
+# Título del PR: [FEAT-1] Leer juegos
 # El PM hace code review antes de mergear
 ```
 
