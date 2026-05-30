@@ -9,5 +9,30 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id           Int      @id @default(autoincrement())
+
+  titulo       String
+  genero       String
+
+  precio       Float
+
+  imagen       String
+
+  rating       Float
+
+  isFavorite   Boolean @default(false)
+
+  anio         Int
+
+  plataformas  String
+
+  descripcion  String
+
+  developer    String
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
