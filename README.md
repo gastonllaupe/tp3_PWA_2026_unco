@@ -80,7 +80,7 @@ Para poner en marcha el proyecto localmente, seguí estos pasos:
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone .git
+   git clone .git https://github.com/gastonllaupe/tp3_PWA_2026_unco
    ```
 
 2. **Entrar al directorio:**
