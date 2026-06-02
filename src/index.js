@@ -1,14 +1,6 @@
-import express from "express";
-
-const app = express();
-
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "ok",
-    message: "API funcionando correctamente",
-  });
-});
+import app from "./app.js";
+import "dotenv/config";
 
 app.listen(3000, () => {
-  console.log("Servidor corriendo en puerto 3000");
+  console.log(">>> Server Running");
 });
