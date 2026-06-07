@@ -5,6 +5,7 @@ import {
   updateGame as updateGameService,
   deleteGame as deleteGameService,
 } from "./../services/games.service.js";
+import { validateGame } from "./../validations/games.validation.js";
 
 export const getAllGames = async (req, res) => {
   try {
@@ -32,6 +33,10 @@ export const getGameById = async (req, res) => {
 
 export const createGame = async (req, res) => {
   try {
+    const error = validateGame(req.body);
+    if (error) {
+      return res.status(400).json({ error });
+    }
     const newGame = await createGameService(req.body);
     res.status(201).json(newGame);
   } catch (error) {
@@ -41,6 +46,10 @@ export const createGame = async (req, res) => {
 
 export const updateGame = async (req, res) => {
   try {
+    const error = validateGame(req.body);
+    if (error) {
+      return res.status(400).json({ error });
+    }
     const idGame = parseInt(req.params.id);
     const update = await updateGameService(idGame, req.body);
     if (update) {
