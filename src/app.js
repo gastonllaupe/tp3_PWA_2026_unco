@@ -1,10 +1,18 @@
 import express from "express";
+import cors from "cors";
 import gamesRouter from "./routes/games.routes.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
+
 app.use(express.json());
+
 app.use("/api/games", gamesRouter);
 
 app.get("/api/health", (req, res) => {
