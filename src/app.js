@@ -1,5 +1,6 @@
 import express from "express";
 import gamesRouter from "./routes/games.routes.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -12,5 +13,13 @@ app.get("/api/health", (req, res) => {
     message: "API funcionando correctamente",
   });
 });
+
+app.use((req, res, next) => {
+  const error = new Error("Ruta no encontrada");
+  error.status = 404;
+  next(error);
+});
+
+app.use(errorHandler);
 
 export default app;
