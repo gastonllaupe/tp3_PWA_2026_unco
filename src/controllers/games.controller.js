@@ -4,6 +4,8 @@ import {
   createGame as createGameService,
   updateGame as updateGameService,
   deleteGame as deleteGameService,
+  toggleFavoriteGame as toggleFavoriteGameService,
+  getFavoriteGames as getFavoriteGamesService,
 } from "./../services/games.service.js";
 import { validateGame } from "./../validations/games.validation.js";
 
@@ -89,5 +91,32 @@ export const deleteGame = async (req, res, next) => {
     }
   } catch (error) {
       next(error);
+  }
+};
+//FEAT 7 - FAVORITES
+export const toggleFavoriteGame = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const updated = await toggleFavoriteGameService(id);
+
+    if (!updated) {
+      const error = new Error("Juego no encontrado");
+      error.status = 404;
+      return next(error);
+    }
+
+    res.status(200).json(updated);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getFavoriteGames = async (req, res, next) => {
+  try {
+    const games = await getFavoriteGamesService();
+    res.status(200).json(games);
+  } catch (error) {
+    next(error);
   }
 };
