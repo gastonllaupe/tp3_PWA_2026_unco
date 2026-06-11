@@ -4,6 +4,7 @@
   "description": "---",
   "main": "index.js",
   "scripts": {
+    "build": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/gastonllaupe/tp3_PWA_2026_unco#readme",
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@vercel/node": "^5.8.17",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
