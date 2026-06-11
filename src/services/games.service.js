@@ -40,3 +40,27 @@ export const updateGame = async (id, data) => {
 export const deleteGame = async (id) => {
   return await prisma.game.delete({ where: { id } });
 };
+
+// FEATURE 7 - FAVORITES
+
+export const toggleFavoriteGame = async (id) => {
+  const game = await prisma.game.findUnique({
+    where: { id },
+  });
+
+  if (!game) return null;
+
+  return await prisma.game.update({
+    where: { id },
+    data: {
+      isFavorite: !game.isFavorite,
+    },
+  });
+};
+
+export const getFavoriteGames = async () => {
+  return await prisma.game.findMany({
+    where: { isFavorite: true },
+    orderBy: { id: "asc" },
+  });
+};
