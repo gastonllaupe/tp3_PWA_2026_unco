@@ -9,7 +9,16 @@ import { validateGame } from "./../validations/games.validation.js";
 
 export const getAllGames = async (req, res, next) => {
   try {
-    const games = await getAllGamesService();
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const search = req.query.search || "";
+
+    const games = await getAllGamesService(
+      page,
+      limit,
+      search
+    );
+
     res.status(200).json(games);
   } catch (error) {
     next(error);
