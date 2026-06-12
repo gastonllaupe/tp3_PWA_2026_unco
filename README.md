@@ -24,7 +24,10 @@
 
 ## Descripción
 
-Backend para aplicación de videojuegos, la base de datos contara con detalles de cada juego y sera utilizada por el proyecto de frontend que puede ser visto en este [repositorio](https://github.com/AlejandroClaure/tp2_PWA_2026_unco)
+Backend para aplicación de videojuegos, la base de datos contara con detalles de cada juego y sera utilizada por el proyecto de frontend que puede ser visto en este [repositorio](https://github.com/AlejandroClaure/tp2_PWA_2026_unco).
+El proyecto puede ser ejectudo localmente o utilizando los deploys realizados:
+Deploy de front end: https://tp2-pwa-2026-unco.vercel.app/
+Deploy de back end: https://tp3-pwa-2026-unco.vercel.app/api/games 
 
 
 ---
