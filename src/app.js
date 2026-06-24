@@ -3,6 +3,7 @@ import cors from "cors";
 
 import gamesRouter from "./routes/games.routes.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import authRouter from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(
 app.use(express.json());
 
 app.use("/api/games", gamesRouter);
+
+app.use("/api/auth", authRouter);
 
 app.get("/api/health", (req, res) => {
   res.json({

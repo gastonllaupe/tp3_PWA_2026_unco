@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
@@ -13,28 +8,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         Int        @id @default(autoincrement())
+  name       String
+  email      String     @unique
+  password   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  favorites  Favorite[]
+}
+
 model Game {
   id           Int      @id @default(autoincrement())
 
   titulo       String
   genero       String
-
   precio       Float
-
   imagen       String
-
   rating       Float
-
-  isFavorite   Boolean @default(false)
-
+  isFavorite   Boolean  @default(false)
   anio         Int
-
   plataformas  String
-
   descripcion  String
-
   developer    String
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  favorites    Favorite[]
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+
+  userId    Int
+  gameId    Int
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, gameId])
 }
