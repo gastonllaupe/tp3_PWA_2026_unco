@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import favoritesRouter from "./routes/favorites.routes.js";
 import gamesRouter from "./routes/games.routes.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import authRouter from "./routes/auth.routes.js";
@@ -21,6 +21,8 @@ app.use(express.json());
 app.use("/api/games", gamesRouter);
 
 app.use("/api/auth", authRouter);
+
+app.use("/api/favorites", favoritesRouter);
 
 app.get("/api/health", (req, res) => {
   res.json({
