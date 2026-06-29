@@ -1,5 +1,4 @@
-# Backend REST API y EXPRESS
-
+# Backend REST API — TP3 Seguridad, Autenticación y JWT
 
 ---
 
@@ -8,7 +7,8 @@
 **Programación Web Avanzada — Facultad de Informática — Universidad Nacional del Comahue — 2026**
 
 ### Trabajos prácticos realizados
-- TP: REST API y Express
+- TP1/TP2: REST API y Express con Prisma
+- TP3: Seguridad, Autenticación y JWT
 
 ---
 
@@ -24,66 +24,114 @@
 
 ## Descripción
 
-Backend para aplicación de videojuegos, la base de datos contara con detalles de cada juego y sera utilizada por el proyecto de frontend que puede ser visto en este [repositorio](https://github.com/AlejandroClaure/tp2_PWA_2026_unco).
-El proyecto puede ser ejectudo localmente o utilizando los deploys realizados:
-Deploy de front end: https://tp2-pwa-2026-unco.vercel.app/
-Deploy de back end: https://tp3-pwa-2026-unco.vercel.app/api/games 
+Backend para la aplicación EsteamApp. Provee una API REST con autenticación JWT para el manejo de usuarios y favoritos. El frontend puede verse en este [repositorio](https://github.com/AlejandroClaure/tp2_PWA_2026_unco).
 
-
----
-
-
-### Librerías utilizadas
-
-- Express
-- Prisma ORM
+- Deploy frontend: https://tp2-pwa-2026-unco.vercel.app/
+- Deploy backend: https://tp3-pwa-2026-unco.vercel.app/api/games
 
 ---
 
+## Endpoints
 
-## Modelo de Datos
+### Juegos
+| Método | Ruta | Descripción |
+| :----- | :--- | :---------- |
+| GET | `/api/games` | Listar juegos (paginado + búsqueda) |
+| GET | `/api/games/:id` | Obtener juego por ID |
+| POST | `/api/games` | Crear juego |
+| PUT | `/api/games/:id` | Actualizar juego |
+| DELETE | `/api/games/:id` | Eliminar juego |
 
-La estructura de los objetos tiene este formato:
+### Autenticación
+| Método | Ruta | Descripción | Auth |
+| :----- | :--- | :---------- | :--- |
+| POST | `/api/auth/register` | Registrar usuario | No |
+| POST | `/api/auth/login` | Iniciar sesión | No |
+| POST | `/api/auth/logout` | Cerrar sesión | No |
+| GET | `/api/auth/me` | Obtener usuario autenticado | Sí |
 
+### Favoritos (requieren token JWT)
+| Método | Ruta | Descripción |
+| :----- | :--- | :---------- |
+| GET | `/api/favorites` | Listar favoritos del usuario |
+| POST | `/api/favorites/:id` | Agregar juego a favoritos |
+| DELETE | `/api/favorites/:id` | Eliminar juego de favoritos |
+
+---
+
+## Modelos de datos
+
+### Game
 ```json
 {
-  "id": "1",
+  "id": 1,
   "titulo": "Cyberpunk 2077",
   "genero": "RPG",
   "precio": 59.99,
   "imagen": "URL",
   "rating": 4.2,
-  "isFavorite": false,
   "anio": 2020,
   "plataformas": "PC, PS5, Xbox",
   "descripcion": "Texto descriptivo del juego...",
   "developer": "CD Projekt Red"
 }
+```
 
+### User
+```json
+{
+  "id": 1,
+  "name": "Juan",
+  "email": "juan@mail.com",
+  "createdAt": "2026-01-01T00:00:00.000Z"
+}
+```
+> El campo `password` se almacena en la base de datos hasheado con bcrypt pero nunca se devuelve en las respuestas de la API.
+
+### Favorite
+```json
+{
+  "id": 1,
+  "userId": 1,
+  "gameId": 5,
+  "createdAt": "2026-01-01T00:00:00.000Z"
+}
 ```
 
 ---
 
-## Stack Tecnológico
+## Stack tecnológico
 
 | Tecnología | Uso / Propósito |
 | :--- | :--- |
-| Node.js | Entorno de ejecución que permite correr JavaScript en el servidor. |
-| Express | Framework que simplifica la creación de APIs y manejo de rutas HTTP. |
-| Prisma ORM | Herramienta que facilita la comunicación entre la aplicación y la base de datos usando modelos en lugar de SQL directo. |
-| PostgreSQL | Sistema de base de datos relacional donde se almacenan los datos de forma estructurada. |
-| NEON | Plataforma cloud que provee PostgreSQL como servicio para poder usar la base de datos en la nube sin administrarla localmente. |
+| Node.js | Entorno de ejecución JavaScript en el servidor |
+| Express | Framework para APIs y manejo de rutas HTTP |
+| Prisma ORM | Comunicación con la base de datos mediante modelos |
+| PostgreSQL | Base de datos relacional |
+| Neon | PostgreSQL como servicio en la nube |
+| bcrypt | Hash seguro de contraseñas |
+| jsonwebtoken | Generación y verificación de tokens JWT |
 
 ---
 
+## Variables de entorno
 
-## Instalación y Setup
+Crear un archivo `.env` en la raíz con las siguientes variables:
 
-Para poner en marcha el proyecto localmente, seguí estos pasos:
+```env
+DATABASE_URL="postgresql://..."
+JWT_SECRET="tu_clave_secreta"
+```
+
+> El archivo `.env.example` incluido en el repo tiene la estructura base.
+
+---
+
+## Instalación y setup
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone .git https://github.com/gastonllaupe/tp3_PWA_2026_unco
+   git clone https://github.com/gastonllaupe/tp3_PWA_2026_unco.git
    ```
 
 2. **Entrar al directorio:**
@@ -101,101 +149,91 @@ Para poner en marcha el proyecto localmente, seguí estos pasos:
    npm install
    ```
 
+5. **Configurar variables de entorno:**
+   ```bash
+   cp .env.example .env
+   # Completar DATABASE_URL y JWT_SECRET en .env
+   ```
+
+6. **Generar el cliente de Prisma:**
+   ```bash
+   npx prisma generate
+   ```
+
+7. **Ejecutar el servidor:**
+   ```bash
+   npm run dev
+   ```
+
+> La API estará disponible en `http://localhost:3000`
 
 ---
 
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ```text
 src/
- ├── controllers/      #recibe req y res, llama a service y responde al front end 
- ├── middlewares/      #maneja errores globales     
- ├── prisma/           #todo lo relacionado a la base de datos 
- ├── routes/           #define las rutas de la API
- └── services/         #se relaciona con prisma, procesa datos
- └── validations/      #valida los datos del usuario
- └── app.js            #configuracion del servidor express
- └── index.js          #levanta el servidor
-
+ ├── controllers/
+ │    ├── auth.controller.js       # register, login, logout, me
+ │    ├── favorites.controller.js  # getFavorites, addFavorite, removeFavorite
+ │    └── games.controller.js
+ ├── middlewares/
+ │    ├── authMiddleware.js        # verificación de token JWT
+ │    └── errorHandler.js
+ ├── routes/
+ │    ├── auth.routes.js
+ │    ├── favorites.routes.js
+ │    └── games.routes.js
+ ├── services/
+ │    ├── auth.service.js          # bcrypt + JWT
+ │    ├── favorites.service.js
+ │    └── games.service.js
+ ├── validations/
+ │    └── games.validation.js
+ ├── app.js                        # configuración de Express y rutas
+ └── index.js                      # levanta el servidor
+prisma/
+ ├── schema.prisma                 # modelos: Game, User, Favorite
+ └── migrations/
 ```
 
 ---
 
-## Estrategia de Branches
+## Estrategia de branches
 
 ```
 main
  └── develop
-      ├── feature/SETUP-1-init-prisma
-      ├── feature/FEAT-1-games-read
-      ├── feature/FEAT-2-games-write
-      └── ...
+      ├── setup-4-security-setup
+      ├── Feat-backend-user
+      └── feat-favorites-backend
 ```
 
-### Ramas principales
+| Branch | Propósito |
+| :----- | :-------- |
+| `main` | Código estable para entregar |
+| `develop` | Integración del trabajo del equipo |
 
-| Branch    | Propósito                                                                                 |
-| --------- | ----------------------------------------------------------------------------------------- |
-| `main`    | Código estable y listo para entregar. Se realiza un merge desde `develop` cuando hay una versión lista. |
-| `develop` | Los desarrolladores integran su trabajo en esta rama antes de poder incorporarlo a `main`.                 |
-
-### Ramas de trabajo
-
-Cada tarea del tablero se trabajara en su respectiva branch.
-
-
-### Cómo crear una branch
+### Flujo de trabajo
 
 ```bash
-# Nos ubicamos en develop y nos aseguramos de estar actualizados
+# Actualizar develop antes de empezar
 git checkout develop
 git pull origin develop
 
-# Creamos la branch con el formato correcto
-git checkout -b feat-4-error-handling
+# Crear branch para la tarea
+git checkout -b feat-nombre-tarea
 
-# Verificamos estar en la branch
-git branch
-```
-
-> Si es la primera vez que subís la branch al repositorio remoto:
->
-> ```bash
-> git push -u origin feature/COMP-1-titulo
-> ```
->
-> Las veces siguientes alcanza con `git push`.
-
----
-
-### Flujo de trabajo diario
-
-```bash
-# 1. Antes de empezar una tarea, actualizar desde develop
-git checkout develop
-git pull origin develop
-
-# 2. Crear branch para la tarea
-git checkout -b feature/FEAT-1-games-read
-
-# 3. Desarrollar y realizar commits
+# Desarrollar, commitear y subir
 git add .
-git commit -m "FEAT-1: GET a los juegos"
+git commit -m "feat: descripción"
+git push origin feat-nombre-tarea
 
-# 4. Subir la branch
-git push origin feature/FEAT-1-games-read
-
-# 5. Abrir Pull Request a develop en GitHub
-# Título del PR: [FEAT-1] Leer juegos
-# El PM hace code review antes de mergear
+# Abrir Pull Request a develop en GitHub
 ```
-
-
----
 
 ### Reglas del equipo
 
-- **No se realizan commits directos a `main` ni a `develop`** — siempre por PR
-- Cada PR necesita ser aprobado por al menos una persona
+- No se hacen commits directos a `main` ni a `develop` — siempre por PR
+- Cada PR necesita al menos una aprobación para mergear
 - Resolver conflictos en la feature branch, no en develop
-- Cada tarea va en su respectivo PR
